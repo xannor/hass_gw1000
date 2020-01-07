@@ -1,0 +1,4 @@
+{
+    "name": "Ecowitt GW1000",
+    "domains": ["binary_sensor", "sensor", "weather"]
+  }

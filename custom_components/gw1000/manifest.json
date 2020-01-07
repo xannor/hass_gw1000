@@ -1,0 +1,8 @@
+{
+    "domain": "gw1000",
+    "name": "Ecowitt GW1000 ",
+    "documentation": "https://github.com/xannor/hass_gw1000",
+    "dependencies": ["webhook"],
+    "codeowners": ["@xannor"],
+    "requirements": ["python-forecastio==1.4.0"]
+}
