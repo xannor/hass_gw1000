@@ -17,8 +17,6 @@ from homeassistant.const import (
     PRESSURE_INHG,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
-    LENGTH_KILOMETERS,
-    LENGTH_MILES,
     LENGTH_INCHES,
 )
 
@@ -26,7 +24,9 @@ from .const import (
     DOMAIN,
     LENGTH_MILLIMETERS,
     LIGHT_WATTS,
-    LIGHT_LUX
+    LIGHT_LUX,
+    SPEED_MILES,
+    SPEED_KILOMETERS,
 ) 
 
 DEPENDENCIES = ['webhook']
@@ -114,7 +114,7 @@ async def async_handle_webook(hass, webhook_id, request: Request):
             "total": float(post['totalrainin']),
         },
         "wind": {
-            "units": LENGTH_MILES,
+            "units": SPEED_MILES,
             "bearing": int(post['winddir']),
             "speed": float(post['windspeedmph']),
             "gust": float(post['windgustmph']),
@@ -169,3 +169,20 @@ async def async_setup(hass, config):
     _LOGGER.debug("Initialized module")
 
     return True
+
+class GW1000EntityFactory(object):
+
+    """Factory to create/remove entities based on webhook data """
+
+    def __init__(self, hass, add_entities, domain, name, webhook_id):
+        self._domain = domain
+        self._name = name
+        self._webhook_id = webhook_id
+        self._add_entities = add_entities
+        self.entities = {}
+
+        hass.components.gw1000.async_register(
+            self._domain, self._name, self._webhook_id, "factory", self._async_handle_data
+        )
+
+    async def _async_handle_data(self, hass, webhook_id, entity_id, results: dict):

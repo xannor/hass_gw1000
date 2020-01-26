@@ -55,14 +55,13 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     _LOGGER.debug("Initializing Weather platform: name=%s webhook_id=%s entity_id=%s", name, webhook_id, entity_id)
 
-    add_entities([GW1000Weather(hass, name, webhook_id, entity_id)], True)
+    add_entities([GW1000Weather(name, webhook_id, entity_id)], True)
 
 class GW1000Weather(WeatherEntity):
     """Representation of a weather condition."""
 
-    def __init__(self, hass, name, webhook_id, weather_entity_id):
+    def __init__(self, name, webhook_id, weather_entity_id):
         self._name = name
-        self.hass = hass
         if weather_entity_id:
             self._tracking = tuple(ent_id.lower() for ent_id in weather_entity_id)
         else:

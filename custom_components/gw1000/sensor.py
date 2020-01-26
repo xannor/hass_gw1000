@@ -16,6 +16,11 @@ from homeassistant.const import (
     ATTR_ATTRIBUTION,
     CONF_ENTITY_NAMESPACE,
     CONF_MONITORED_CONDITIONS,
+    PRESSURE_HPA,
+    PRESSURE_INHG,
+    TEMP_CELSIUS,
+    TEMP_FAHRENHEIT,
+    LENGTH_INCHES,
 )
 from homeassistant.core import callback
 
@@ -28,7 +33,9 @@ from .const import (
     DEFAULT_ENTITY_NAMESPACE,
     LENGTH_MILLIMETERS,
     LIGHT_WATTS,
-    LIGHT_LUX
+    LIGHT_LUX,
+    SPEED_MILES,
+    SPEED_KILOMETERS,
 )
 
 from .conversions import (
@@ -39,8 +46,26 @@ DEPENDENCIES = ['gw1000']
 
 # Sensor types: Name, units, class, icon, key, part
 SENSOR_TYPES = {
-    "uv": ("uv", "Index", None, None, "solar", "uv"),
-    "solarradiation": ("Solar Rad", LIGHT_LUX, "illuminance", None, "solar", "radiation"),
+    "temp": ("Temperature", TEMP_FAHRENHEIT, "temperature", "thermometer", "outdoor", "temperature"),
+    "humidity": ("Humidity", "%", "humidity", "water-percent", "outdoor", "humidity"),
+    "temp_in": ("Indoor Temperature", TEMP_FAHRENHEIT, "temperature", "thermometer", "indoor", "temperature"),
+    "humidity_in": ("Indoor Humidity", "%", "humidity", "water-percent", "outdoor", "humidity"),
+    "pressure_abs": ("Absolute Pressure", PRESSURE_INHG, "pressure", "gauge", "pressure", "absolute"),
+    "pressure_rel": ("Relative Pressure", PRESSURE_INHG, "pressure", "gauge", "pressure", "relative"),
+    "uv": ("UV", "Index", None, "sunglasses", "solar", "uv"),
+    "solarradiation": ("Solar Rad", LIGHT_LUX, "illuminance", "weather-sunny", "solar", "radiation"),
+    "winddir": ("Wind Bearing", "°", None, "compass-outline", "wind", "bearing"),
+    "windspeed": ("Wind Speed", SPEED_MILES, None, "weather-windy", "wind", "speed"),
+    "windgust": ("Wind Gust", SPEED_MILES, None, "weather-windy", "wind", "gust"),
+    "windgustmax": ("Wind Max Gust", SPEED_MILES, None, "weather-windy", "wind", "maxgust"),
+    "rainrate": ("Rain Rate", LENGTH_INCHES + "/hr", None, "umbrella", "rain", "rate"),
+    "rainevent": ("Rain Event", LENGTH_INCHES, None, "weather-rainy", "rain", "event"),
+    "rainhourly": ("Hourly Rain", LENGTH_INCHES, None, "weather-rainy", "rain", "hourly"),
+    "raindaily": ("Daily Rain", LENGTH_INCHES, None, "weather-rainy", "rain", "daily"),
+    "rainweekly": ("Weekly Rain", LENGTH_INCHES, None, "weather-rainy", "rain", "weekly"),
+    "rainmonthly": ("Monthly Rain", LENGTH_INCHES, None, "weather-rainy", "rain", "monthly"),
+    "rainyearly": ("Yearly Rain", LENGTH_INCHES, None, "weather-rainy", "rain", "yearly"),
+    "raintotal": ("Total Rain", LENGTH_INCHES, None, "weather-rainy", "rain", "total"),
 }
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
@@ -67,7 +92,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     sensors = []    
     for sensor_type in config[CONF_MONITORED_CONDITIONS]:
-        sensors.append(GW1000Sensor(hass, namespace, webhook_id, sensor_type))
+        sensors.append(GW1000Sensor(namespace, webhook_id, sensor_type))
 
     _LOGGER.debug("Initialized %s entities", len(sensors))
 

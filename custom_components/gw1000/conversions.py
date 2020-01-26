@@ -10,15 +10,15 @@ from homeassistant.const import (
     PRESSURE_INHG,
     TEMP_CELSIUS,
     TEMP_FAHRENHEIT,
-    LENGTH_KILOMETERS,
-    LENGTH_MILES,
     LENGTH_INCHES,
 )
 
 from .const import (
     LENGTH_MILLIMETERS,
     LIGHT_WATTS,
-    LIGHT_LUX
+    LIGHT_LUX,
+    SPEED_MILES,
+    SPEED_KILOMETERS,
 )
 
 CONVERT = {
@@ -28,8 +28,8 @@ CONVERT = {
     PRESSURE_INHG: {
         PRESSURE_HPA: lambda value: float(value) * 33.86389, 
     },
-    LENGTH_MILES: {
-        LENGTH_KILOMETERS: lambda value: float(value) / 0.62137, 
+    SPEED_MILES: {
+        SPEED_KILOMETERS: lambda value: float(value) / 0.62137, 
     },
     LENGTH_INCHES: {
         LENGTH_MILLIMETERS: lambda value: float(value) * 25.4, 
