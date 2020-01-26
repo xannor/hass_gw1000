@@ -59,7 +59,11 @@ class GW1000AirQualityEntityFactory(GW1000EntityFactory):
     """Air Quality Factory"""
 
     def __init__(self, hass, add_entities, webhook_id):
-        super().__init__(hass, add_entities, "air_quality", "factory", webhook_id)
+        super().__init__(hass, add_entities, "air_quality", "factory", "air", webhook_id)
+
+    async def _async_handle_data(self, hass, webhook_id, entity_id, results: dict):
+
+
 
 class GW1000PM25(AirQualityEntity):
     """Representation of an air quality sensor."""

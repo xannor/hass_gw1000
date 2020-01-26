@@ -174,10 +174,11 @@ class GW1000EntityFactory(object):
 
     """Factory to create/remove entities based on webhook data """
 
-    def __init__(self, hass, add_entities, domain, name, webhook_id):
+    def __init__(self, hass, add_entities, domain, name, key, webhook_id):
         self._domain = domain
         self._name = name
         self._webhook_id = webhook_id
+        self._key = key
         self._add_entities = add_entities
         self.entities = {}
 
@@ -186,3 +187,7 @@ class GW1000EntityFactory(object):
         )
 
     async def _async_handle_data(self, hass, webhook_id, entity_id, results: dict):
+        """Implement entity create/update"""
+        
+        block = results.get(self._key, {})
+

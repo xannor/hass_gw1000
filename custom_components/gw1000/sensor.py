@@ -92,7 +92,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
 
     sensors = []    
     for sensor_type in config[CONF_MONITORED_CONDITIONS]:
-        sensors.append(GW1000Sensor(namespace, webhook_id, sensor_type))
+        sensors.append(GW1000Sensor(hass, namespace, webhook_id, sensor_type))
 
     _LOGGER.debug("Initialized %s entities", len(sensors))
 
